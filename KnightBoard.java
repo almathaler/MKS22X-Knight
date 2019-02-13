@@ -54,11 +54,18 @@ public class KnightBoard{
   }
 
   /*
+  **Modifies the board by labeling the moves from 1
+  **(at startingRow,startingCol) up to the area of the board in proper knight move steps.
   **@throws IllegalStateException when the board contains non-zero values.
   **@throws IllegalArgumentException when either parameter is negative
   **or out of bounds.
   */
-  public boolean solve(int startingRow, int startingCol){}
+  public boolean solve(int startingRow, int startingCol){
+    if (startingRow<0 || startingRow>=board.length || startingCol<0 || startingCol>=board[0].length){
+      throw new IllegalStateException("you can't solve from an out-of-bounds position!");
+    }
+    return false;
+  }
   /*
   **@throws IllegalStateException when the board contains non-zero values.
   **@throws IllegalArgumentException when either parameter is negative
