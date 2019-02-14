@@ -1,5 +1,17 @@
+import java.util.ArrayList;
 public class KnightBoard{
+  private class move{
+    int rChange;
+    int cChange;
+    private move(int rC, int cC){
+      rChange = rC;
+      cChange = cC;
+    }
+
+  }
+  //have to check (r-2, c-1), (r-2, c+1), (r-1, c-2), (r+1, c-2), (r+2, c-1), (r+2, c+1), (r-1, c+2), (r+1, c+2))
   int[][] board;
+  ArrayList<move> moveList = new ArrayList<move>(8);
   /*
   **@throws IllegalArgumentException when either parameter is negative.
   */
@@ -13,6 +25,22 @@ public class KnightBoard{
         board[r][c] = 0;
       }
     }
+    move m0 = new move(-2, -1);
+    moveList.add(m0);
+    move m1 = new move(-2, 1);
+    moveList.add(m1);
+    move m2 = new move(-1, -2);
+    moveList.add(m2);
+    move m3 = new move(1, -2);
+    moveList.add(m3);
+    move m4 = new move(2, -1);
+    moveList.add(m4);
+    move m5 = new move(2, 1);
+    moveList.add(m5);
+    move m6 = new move(-1, 2);
+    moveList.add(m6);
+    move m7 = new move(1, 2);
+    moveList.add(m7);
   }
 
       //Initialize the board to the correct size and make them all 0's
@@ -55,7 +83,7 @@ public class KnightBoard{
 
   /*
   **Modifies the board by labeling the moves from 1
-  **(at startingRow,startingCol) up to the area of the board in proper knight move steps.
+  **(at startingRow,startingCol) up to the area of the board in proper knight move steps.board[r]
   **@throws IllegalStateException when the board contains non-zero values.
   **@throws IllegalArgumentException when either parameter is negative
   **or out of bounds.
@@ -64,6 +92,33 @@ public class KnightBoard{
     if (startingRow<0 || startingRow>=board.length || startingCol<0 || startingCol>=board[0].length){
       throw new IllegalStateException("you can't solve from an out-of-bounds position!");
     }
+    for (int r = 0; r<board.length; r++){ //go through every spot startng at topleft. if you can solve from
+      for (int c = 0; c<board[0].length; c++){ //any of those position just return treu
+        if (solveH(r, c, 1)){
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  private boolean solveH(int r, int c, int level){
+    //have to check (r-2, c-1), (r-2, c+1), (r-1, c-2), (r+1, c-2), (r+2, c-1), (r+2, c+1), (r-1, c+2), (r+1, c+2))
+    for (int i = 0; i<moveList.size(); i++){ //go through every possible move
+      try{ //try block so things that are out of bounds are just skipped
+        int newR = r + moveList.get(i).rChange; //based on the changes in the list, make new coords for next call
+        int newC = c + moveList.get(i).cChange;
+        if (board[r][c] == 0){ //if the current value can have something placed on it
+          board[r][c] = level; //place the new number
+          if (level == board.length * board[0].length){ //if this number was the area, you're done and return true
+            return true;
+          }
+          return solveH(newR, newC, level+1); //otherwise, after adding, just go to the next spot (determined by moveList) and see where you can assign the next val
+        }
+      }catch(ArrayIndexOutOfBoundsException e){
+        //don;t do anything just try the next one
+      }
+    }
     return false;
   }
   /*
@@ -71,7 +126,9 @@ public class KnightBoard{
   **@throws IllegalArgumentException when either parameter is negative
   **or out of bounds.
   */
-  public int countSolutions(int startingRow, int startingCol){}
+  public int countSolutions(int startingRow, int startingCol){
+    return -1;
+  }
 
   //Suggestion:
   //private boolean solveH(int row ,int col, int level)
