@@ -7,11 +7,21 @@ public class KnightBoard{
       rChange = rC;
       cChange = cC;
     }
+    public String toString(){
+      String toReturn = "(" + rChange + ", " + cChange + ")";
+      return toReturn;
+    }
 
   }
   //have to check (r-2, c-1), (r-2, c+1), (r-1, c-2), (r+1, c-2), (r+2, c-1), (r+2, c+1), (r-1, c+2), (r+1, c+2))
   int[][] board;
   ArrayList<move> moveList = new ArrayList<move>(8);
+  public static void main(String[] args){
+    KnightBoard example = new KnightBoard(8, 8);
+    System.out.println(example.moveList);
+    example.solve(0, 0);
+    System.out.println(example.toString());
+  }
   /*
   **@throws IllegalArgumentException when either parameter is negative.
   */
@@ -58,7 +68,7 @@ public class KnightBoard{
        numSpaces++;
     }
     String toReturn = "";
-    if (board[0][0] == 0){
+    if (board[0][0] == 0){ //change to check everything
       for (int r =0; r<board.length; r++){
         for (int c = 0; c<board[0].length; c++){
           toReturn += "_";
@@ -74,7 +84,7 @@ public class KnightBoard{
             toReturn += " ";
           }
         }
-        toReturn += board[r][c];
+        toReturn += board[r][c] + " ";
       }
       toReturn += "\n";
     }
@@ -94,12 +104,23 @@ public class KnightBoard{
     }
     for (int r = 0; r<board.length; r++){ //go through every spot startng at topleft. if you can solve from
       for (int c = 0; c<board[0].length; c++){ //any of those position just return treu
+        System.out.println("***\nChecking if board can be solved from " + r + ", " + c);
         if (solveH(r, c, 1)){
+          System.out.println("it can be");
           return true;
         }
       }
     }
     return false;
+  }
+
+  private boolean clearBoard(){
+    for (int r = 0; r<board.length; r++){
+      for (int c = 0; c<board[0].length; c++){
+        board[r][c] = 0;
+      }
+    }
+    return true;
   }
 
   private boolean solveH(int r, int c, int level){
@@ -108,17 +129,27 @@ public class KnightBoard{
       try{ //try block so things that are out of bounds are just skipped
         int newR = r + moveList.get(i).rChange; //based on the changes in the list, make new coords for next call
         int newC = c + moveList.get(i).cChange;
-        if (board[r][c] == 0){ //if the current value can have something placed on it
+        System.out.println("In solveH, checking to see if board at " + r + ", " + c + " is available");
+        if (board[r][c] == 0 || (i > 0 && board[r][c] == level)){ //if the current value can have something placed on it
+          System.out.println("It is available, changing it to " + level);
+          //System.out.println(toString());
           board[r][c] = level; //place the new number
+          System.out.println(toString());
           if (level == board.length * board[0].length){ //if this number was the area, you're done and return true
             return true;
           }
-          return solveH(newR, newC, level+1); //otherwise, after adding, just go to the next spot (determined by moveList) and see where you can assign the next val
+          System.out.println("solveH(" + newR + ", " + newC + ", " + (level+1) + ")");
+          if (solveH(newR, newC, level+1)){
+            return true;
+          }//otherwise, after adding, just go to the next spot (determined by moveList) and see where you can assign the next val
         }
       }catch(ArrayIndexOutOfBoundsException e){
         //don;t do anything just try the next one
       }
     }
+    System.out.println("No move possible from " + r + ", " + c);
+    System.out.println(toString());
+    //clearBoard(); // if it didn't work, clear the board so that other calls won't be messed up
     return false;
   }
   /*
