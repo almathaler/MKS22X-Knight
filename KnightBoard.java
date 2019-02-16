@@ -15,9 +15,9 @@ public class KnightBoard{
   }
   //have to check (r-2, c-1), (r-2, c+1), (r-1, c-2), (r+1, c-2), (r+2, c-1), (r+2, c+1), (r-1, c+2), (r+1, c+2))
   int[][] board;
-  ArrayList<move> moveList = new ArrayList<move>(5);
+  ArrayList<move> moveList = new ArrayList<move>(8);
   public static void main(String[] args){
-    KnightBoard example = new KnightBoard(5, 5);
+    KnightBoard example = new KnightBoard(9, 9);
     System.out.println(example.moveList);
     example.solve(0, 0);
     System.out.println(example.toString());
