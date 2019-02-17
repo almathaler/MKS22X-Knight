@@ -16,8 +16,12 @@ public class KnightBoard{
   //have to check (r-2, c-1), (r-2, c+1), (r-1, c-2), (r+1, c-2), (r+2, c-1), (r+2, c+1), (r-1, c+2), (r+1, c+2))
   int[][] board;
   ArrayList<move> moveList = new ArrayList<move>(8);
+  //m and n are both odd
+  //m = 1, 2, or 4
+  //m = 3 and n = 4, 6, or 8.
+
   public static void main(String[] args){
-    KnightBoard example = new KnightBoard(9, 9);
+    KnightBoard example = new KnightBoard(8, 8);
     System.out.println(example.moveList);
     example.solve(0, 0);
     System.out.println(example.toString());
@@ -35,21 +39,24 @@ public class KnightBoard{
         board[r][c] = 0;
       }
     }
-    move m0 = new move(-2, -1);
+    //{-1,-2,/-2,-1,/-2,1,/-1,2,/1,2,/2,1,/2,-1,/-1,2}
+
+    //()
+    move m0 = new move(-1, -2);
     moveList.add(m0);
-    move m1 = new move(-2, 1);
+    move m1 = new move(-2, -1);
     moveList.add(m1);
-    move m2 = new move(-1, -2);
+    move m2 = new move(-2, 1);
     moveList.add(m2);
-    move m3 = new move(1, -2);
+    move m3 = new move(-1, 2);
     moveList.add(m3);
-    move m4 = new move(2, -1);
+    move m4 = new move(1, 2);
     moveList.add(m4);
     move m5 = new move(2, 1);
     moveList.add(m5);
-    move m6 = new move(-1, 2);
+    move m6 = new move(2, -1);
     moveList.add(m6);
-    move m7 = new move(1, 2);
+    move m7 = new move(-1, 2);
     moveList.add(m7);
   }
 
