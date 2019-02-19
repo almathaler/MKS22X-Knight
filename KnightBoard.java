@@ -61,6 +61,19 @@ public class KnightBoard{
     }
     return toReturn;
   }
+  private String toStringDebug(){
+    String toReturn = "";
+    for (int rN = 0; rN<board.length; rN++){
+      for (int cN = 0; cN<board[0].length; cN++){
+        for (int i = (board.length*board[0].length + "").length() - (board[rN][cN]+"").length(); i>0; i--){
+          toReturn+=" ";
+        }
+        toReturn+=(board[rN][cN] + " ");
+      }
+      toReturn += "\n";
+    }
+    return toReturn;
+  }
   /*
   3 solve
   Modifies the board by labeling the moves from 1 (at startingRow,startingCol) up to the area of the board in proper knight move steps.
@@ -83,7 +96,9 @@ public class KnightBoard{
     return solveH(startingRow, startingCol, 1);
   }
   private boolean solveH(int row ,int col, int moveNumber){
+    System.out.println("In new call of solveH(" + row + ", " + col + ", " + moveNumber + ")");
     board[row][col] = moveNumber;
+    System.out.println(toStringDebug());
     if (moveNumber == board.length * board[0].length){
       return true;
     }
@@ -91,10 +106,20 @@ public class KnightBoard{
       int newR = row + moves[i][0];
       int newC = col + moves[i][1];
       if (newR>= 0 && newR<board.length && newC>=0 && newC < board[0].length && board[newR][newC] == 0){
-        return solveH(newR, newC, moveNumber+1);
+        System.out.println("Now going to call solveH(" + newR + ", " + newC + ", " + (moveNumber+1) + ")");
+        if(solveH(newR, newC, moveNumber+1)){
+          return true;
+        } //can't have it just return solveH, bc minute it gets into a corner w no possible moves false will be returned
+        //rather than all other possibilities searched for a true
       }
     }
-    return false;
+    board[row][col] = 0; //if there are no good solveHs from here, erase what you put down so that other passes can go over it
+    return false; //if you can't move from herer ^^, you have to reset it and return false bc it's a bad path. not being able to move means
+    //either every position from u is out of bounds or there are no free positions around u. if for all 8 possible moves nothing is available,
+    //the loop will terminate without returning true (won't even check next recursive call). so you need to delete your addition and return false
+    //showing it's a bad pathway
+    //good pathways will always have valid moves, and so the if statement will always be true until you're in a solveH call where moveNUmber is mx
+    //and true can be returned 
   }
   /*
   4 countSolutions
