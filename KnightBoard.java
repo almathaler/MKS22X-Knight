@@ -11,11 +11,17 @@ public class KnightBoard{
 
   */
   public static void main(String[] args){
-    KnightBoard example = new KnightBoard(5, 5);
+    KnightBoard example = new KnightBoard(8, 8);
     System.out.println(example.solve(0,0));
     System.out.println(example.toString());
-    KnightBoard example1 = new KnightBoard(5, 5);
-    System.out.println(example1.countSolutions(0,0));
+    for (int i = 1; i<=6; i++){
+      for (int j = 3; j<=6; j++){
+        System.out.println("size: " + i + "x" + j);
+        KnightBoard example1 = new KnightBoard(i, j);
+        System.out.println(example1.countSolutions(0,0));
+      }
+    }
+
     //System.out.println(example.toString());
   }
 
@@ -102,7 +108,7 @@ public class KnightBoard{
     //System.out.println("In new call of solveH(" + row + ", " + col + ", " + moveNumber + ")");
     board[row][col] = moveNumber;
     //System.out.println(toStringDebug());
-    if (moveNumber == board.length * board[0].length){
+    if (moveNumber == board.length * board[0].length ){ //a 1x1 board doesn't count
       return true;
     }
     for (int i = 0; i<8; i++){
@@ -149,7 +155,7 @@ public class KnightBoard{
   private int countH(int curR, int curC, int moveNumber){
       int toReturn = 0;
       if (moveNumber == board.length * board[0].length){
-        System.out.println("found a solution! returning 1 and it should be added to toReturn");
+        //System.out.println("found a solution! returning 1 and it should be added to toReturn");
         return 1;
       }
       for (int i = 0; i<8; i++){
