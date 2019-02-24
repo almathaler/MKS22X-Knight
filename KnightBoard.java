@@ -19,6 +19,7 @@ public class KnightBoard{
         System.out.println("size: " + i + "x" + j);
         KnightBoard example1 = new KnightBoard(i, j);
         System.out.println(example1.countSolutions(0,0));
+        System.out.println(example1.toString());
       }
     }
 
@@ -36,7 +37,13 @@ public class KnightBoard{
       }
     }
   }
-
+  private void clear(){
+    for (int r = 0; r<board.length; r++){
+      for (int c = 0; c<board[0].length; c++){
+        board[r][c] = 0;
+      }
+    }
+  }
   /*
   2 toString
   -you get a blank board if you never called solve or when there is no solution
@@ -102,7 +109,14 @@ public class KnightBoard{
         }
       }
     }
-    return solveH(startingRow, startingCol, 1);
+    if (solveH(startingRow, startingCol, 1)){
+      //clear();
+      return true;
+    }else{
+      clear();
+      return false;
+    }
+    //return solveH(startingRow, startingCol, 1);
   }
   private boolean solveH(int row ,int col, int moveNumber){
     //System.out.println("In new call of solveH(" + row + ", " + col + ", " + moveNumber + ")");
@@ -150,7 +164,10 @@ public class KnightBoard{
         }
       }
     }
-    return countH(startingRow, startingCol, 1);
+    int toReturn = 0;
+    toReturn = countH(startingRow, startingCol, 1);
+    clear();
+    return toReturn;
   }
   private int countH(int curR, int curC, int moveNumber){
       int toReturn = 0;
