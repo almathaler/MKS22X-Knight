@@ -1,3 +1,4 @@
+import java.util.Collections;
 public class KnightBoard{
   private int[][] board;
   private int[][] moves = {{-1,-2}, {-2,-1}, {-2,1}, {1,-2}, {1,2}, {2,1}, {2,-1}, {-1,2}};
@@ -12,8 +13,9 @@ public class KnightBoard{
   */
   public static void main(String[] args){
     KnightBoard example = new KnightBoard(8, 8);
-    System.out.println(example.solve(0,0));
+    //System.out.println(example.solve(0,0));
     System.out.println(example.toString());
+    /*
     for (int i = 1; i<=6; i++){
       for (int j = 3; j<=6; j++){
         System.out.println("size: " + i + "x" + j);
@@ -22,6 +24,7 @@ public class KnightBoard{
         System.out.println(example1.toString());
       }
     }
+    */
 
     //System.out.println(example.toString());
   }
@@ -33,9 +36,27 @@ public class KnightBoard{
     board = new int[rows][cols];
     for (int r = 0; r<rows; r++){
       for (int c = 0; c<cols; c++){
+        int toAssign = 0;
+        for (int moveNum = 0; moveNum<8; moveNum++){
+          int newR = r + moves[moveNum][0];
+          int newC = c + moves[moveNum][1];
+          try{
+            board[newR][newC] = board[newR][newC]; //just check if it's not outofbounds
+            toAssign++; //if it is out of bounds, it won't get to this part. if it's not, then it will
+          }catch (IndexOutOfBoundsException e){
+            //do nothing
+          }
+        }
+        board[r][c] = toAssign;
+      }
+    }
+    /* OLD Version
+    for (int r = 0; r<rows; r++){
+      for (int c = 0; c<cols; c++){
         board[r][c] = 0;
       }
     }
+    */
   }
   private void clear(){
     for (int r = 0; r<board.length; r++){
@@ -56,10 +77,10 @@ public class KnightBoard{
     for (int r = 0; r<board.length; r++){
       for (int c = 0; c<board[0].length; c++){
         if (board[r][c] == 0){ //if the board is in an unfinished state, return all the '_'s
-          for (int k = 0; k<board.length; k++){
-            for (int l = 0; l<board[0].length; l++){
-              toReturn += "_ ";
-            }
+          for (int k = 0; k<board.length; k++){ //do i even need clear if my toString does this? yea bc under the hood it's still messed up
+            for (int l = 0; l<board[0].length; l++){ //^this case should never happen then, if j the first square is zero
+              toReturn += "_ "; //that means all board is 0 so i don't need to check so much. Also is this n^4? idk it's
+            }                   //not doing a n^2 loop for every board[r][c], it only does it once it's like a n^2/2 then n^2
             toReturn += "\n";
           }
           return toReturn;
@@ -69,7 +90,7 @@ public class KnightBoard{
     for (int rN = 0; rN<board.length; rN++){
       for (int cN = 0; cN<board[0].length; cN++){
         for (int i = (board.length*board[0].length + "").length() - (board[rN][cN]+"").length(); i>0; i--){
-          toReturn+=" ";
+          toReturn+=" "; //^can right-adjust every board
         }
         toReturn+=(board[rN][cN] + " ");
       }
