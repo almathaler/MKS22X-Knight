@@ -23,24 +23,19 @@ public class KnightBoard{
 
   */
   public static void main(String[] args){
-    KnightBoard example = new KnightBoard(15, 15);
-    System.out.println(example.toString());
-    System.out.println(example.opToString());
-    System.out.println(example.solve(0,0));
-    System.out.println(example.toString());
-    System.out.println(example.opToString());
-    /*
-    for (int i = 1; i<=6; i++){
-      for (int j = 3; j<=6; j++){
-        System.out.println("size: " + i + "x" + j);
-        KnightBoard example1 = new KnightBoard(i, j);
-        System.out.println(example1.countSolutions(0,0));
-        System.out.println(example1.toString());
+    for (int i = 1; i<7; i++){
+      for (int k = 1; k<7; k++){
+        KnightBoard example = new KnightBoard(i, k);
+        System.out.println("For " + i + "x" + k + " :");
+        System.out.println(example.opToString());
+        example.solve(0,0);
+        System.out.println(example.toString());
+        System.out.println(example.opToString());
+        example.clear();
+        System.out.println("Possible solutions from (0, 0): " + example.countSolutions(0, 0));
+        System.out.println("****\n");
       }
     }
-    */
-
-    //System.out.println(example.toString());
   }
 
   public KnightBoard(int rows, int cols){
